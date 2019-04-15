@@ -11,3 +11,6 @@ tmp
 *.swp
 
 db/*.db
+
+# for private notes
+notes/*
