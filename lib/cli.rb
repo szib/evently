@@ -22,14 +22,13 @@ class CLI
   end
 
   def show_menu
-    menu_items = ["Show my events", "Search events", "Quit"]
-    @prompt.select("What would you like to do?", menu_items)
+    menu_items = ['Show my events', 'Search for new events', 'Quit']
+    @prompt.select('What would you like to do?', menu_items)
   end
 
   def display_current_events
     puts 'You are currently attending:'
-    @guest.events.each do |event|
-      puts event.title
+    tp @guest.events, :title, :date, :venue, :cancelled
     end
   end
 
@@ -54,12 +53,14 @@ class CLI
     welcome
 
     answer = nil
-    until answer == "Quit"
+    until answer == 'Quit'
       answer = show_menu
-      if answer == "Show my events"
+      case answer
+      when 'Show my events'
         display_current_events
+      when 'Search for new events'
+        search_for_new_events
       end
     end
   end
-
 end
