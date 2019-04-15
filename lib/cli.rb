@@ -29,7 +29,12 @@ class CLI
   def display_current_events
     puts 'You are currently attending:'
     tp @guest.events, :title, :date, :venue, :cancelled
-    end
+  end
+
+  def search_for_new_events
+    events = Event.all.reject { |event| event.guests.include?(@guest) }.map(&:title)
+    @prompt.select('Select an event:', events, filter: true)
+    @guest.events.first.display
   end
 
   # def add_event
