@@ -11,5 +11,5 @@ gem 'rake'
 gem "faker"
 gem 'pastel' 
 gem 'tty-prompt' 
-gem 'tty-table' 
+gem 'table_print' 
 gem 'tty-font'
