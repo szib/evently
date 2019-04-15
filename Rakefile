@@ -7,8 +7,7 @@ task :console do
   Pry.start
 end
 
-desc 'Start our application'
+desc 'start app'
 task :run do
-  cli = CLI.new
-  cli.run
+  require_relative 'bin/eventy.rb'
 end

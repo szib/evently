@@ -12,3 +12,4 @@ gem "faker"
 gem 'pastel' 
 gem 'tty-prompt' 
 gem 'tty-table' 
+gem 'tty-font'
