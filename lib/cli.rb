@@ -24,14 +24,13 @@ class CLI
   def display_current_events
     puts 'You are currently attending:'
     @guest.events.each do |event|
-      puts event.name
+      puts event.title
     end
-    # add table @table = TTY::Table.new
   end
 
   # def add_event
   #   @prompt.yes?("Would you like to add another event?")
-  # attendances
+  # end
 
   # def add_event_name
   #   event_name = @prompt.ask("What's event name?")
@@ -49,7 +48,7 @@ class CLI
     find_or_create_user
     welcome
     display_current_events
-    add_event
+    #add_event
     # if add_event?
     #   add_event_name
     # else
