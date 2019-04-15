@@ -21,6 +21,11 @@ class CLI
     puts "Welcome, #{@guest.name}!"
   end
 
+  def show_menu
+    menu_items = ["Show my events", "Search events", "Quit"]
+    @prompt.select("What would you like to do?", menu_items)
+  end
+
   def display_current_events
     puts 'You are currently attending:'
     @guest.events.each do |event|
@@ -47,12 +52,14 @@ class CLI
     display_logo
     find_or_create_user
     welcome
-    display_current_events
-    #add_event
-    # if add_event?
-    #   add_event_name
-    # else
-    #   bye
-    # end
+
+    answer = nil
+    until answer == "Quit"
+      answer = show_menu
+      if answer == "Show my events"
+        display_current_events
+      end
+    end
   end
+
 end
