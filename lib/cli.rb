@@ -103,11 +103,7 @@ class CLI
 
   def choose_from_event_menu
     choices = ["Toggle attendance", "Change extra guests", "Quit"]
-    @prompt.enum_select("Select an editor?") do |menu|
-      menu.choice "Toggle attendance",  1
-      menu.choice "Change extra guests", 2
-      menu.choice "Quit", 3
-    end
+    @prompt.select("Choose from the menu:", choices) 
   end
 
   def run
@@ -128,9 +124,9 @@ class CLI
         menu_item = choose_from_event_menu
 
         case menu_item
-        when 1
+        when "Toggle attendance"
           update_attendance(event)
-        when 2
+        when "Change extra guests"
           update_friends(event)
         else
           puts "Okay."
