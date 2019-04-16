@@ -25,4 +25,18 @@ class Event < ActiveRecord::Base
     self.guests.include?(guest)
   end
 
+  def toggle_attendance(guest)
+    # add or remove attendance to the event
+    # guest can signup for event or cancel attendance
+    attendance = self.attendances.find { |a| a.guest == guest }
+    if attendance
+      attendance.destroy
+      attendance = nil
+    else
+      attendance = Attendance.create(event: self, guest: guest)
+    end
+    attendance
+  end
+
+
 end

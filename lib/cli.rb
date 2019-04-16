@@ -46,7 +46,7 @@ class CLI
     end
     answer = @prompt.yes?(question)
     if answer == true
-      Attendance.toggle_attendance(event: event, guest: @guest)
+      event.toggle_attendance(@guest)
       puts "Consider it done."
     else
       puts "Okay, no problem!"
