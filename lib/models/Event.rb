@@ -35,4 +35,8 @@ class Event < ActiveRecord::Base
     hash
   end
 
+  def attending?(guest)
+    self.guests.include?(guest)
+  end
+
 end

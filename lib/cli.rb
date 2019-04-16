@@ -54,6 +54,27 @@ class CLI
     end
   end
 
+  def update_friends(event)
+    return unless event.attending?(@guest)
+
+    attendance = Attendance.find_by(guest: @guest, event: event)
+    
+    question = "You are bringing #{attendance.friends_to_s}. Would you like to change it?"
+    answer = @prompt.yes?(question)
+
+    if answer == true
+      question = "How many friends would you like to bring?"
+      answer = @prompt.ask(question) do |q|
+        q.validate /^\d$/
+        q.messages[:valid?] = 'You can bring up to nine friends.'
+      end
+      attendance.change_num_of_friends(answer.to_i) 
+      puts "Consider it done."
+    else
+      puts "Okay, no problem!"
+    end
+  end
+
   def run
     display_logo
     find_or_create_user
@@ -69,6 +90,7 @@ class CLI
         event = search_for_events
         event.display
         update_attendance(event)
+        update_friends(event)
       end
     end
   end
