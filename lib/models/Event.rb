@@ -9,8 +9,9 @@ class Event < ActiveRecord::Base
 
   validates :admin, :title, :date, :venue, presence: true
 
-  def num_of_attendees?
+  def num_of_attendees
     # including extra friends
+    self.attendances.map { |a| a.number_of_guests }.sum
   end
 
   def display
