@@ -22,7 +22,7 @@ class CLI
   end
 
   def show_menu
-    menu_items = ['Show my events', 'Search for new events', 'Quit']
+    menu_items = ['Show my events', 'Search for events', 'Quit']
     @prompt.select('What would you like to do?', menu_items)
   end
 
@@ -65,7 +65,7 @@ class CLI
       case answer
       when 'Show my events'
         display_current_events
-      when 'Search for new events'
+      when 'Search for events'
         event = search_for_events
         event.display
         update_attendance(event)
