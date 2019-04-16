@@ -75,6 +75,33 @@ class CLI
     end
   end
 
+  def display_guest_list(event)
+    pastel = Pastel.new
+    attendees = event.attendances.first(5).map { |a| a.guest_name_with_friends }.join(", ")
+    if attendees.length > 5 
+      attendees = [attendees, " and many more..."].join()
+    end
+    
+    puts pastel.green("-" * 60)
+    puts pastel.green("Guest list:")
+    puts pastel.green(attendees)
+    puts pastel.green("-" * 60)
+  end
+
+  def display_event(event)
+    pastel = Pastel.new
+    puts '-' * 60
+    puts pastel.yellow(event.title)
+    puts '-' * 60
+
+    puts pastel.cyan("Description:\t\t #{event.description}")
+    puts pastel.cyan("Date:\t\t #{event.date}")
+    puts pastel.cyan("Venue:\t\t #{event.venue}")
+    puts pastel.cyan("Attendees:\t\t #{event.num_of_attendees}")
+
+    display_guest_list(event)
+  end
+
   def run
     display_logo
     find_or_create_user
@@ -88,7 +115,7 @@ class CLI
         display_current_events
       when 'Search for events'
         event = search_for_events
-        event.display
+        display_event(event)
         update_attendance(event)
         update_friends(event)
       end
