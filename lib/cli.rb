@@ -28,7 +28,7 @@ class CLI
 
   def display_current_events
     puts 'You are currently attending:'
-    tp @guest.reload.events, :title, :date, :venue, :cancelled
+    tp @guest.reload.events, :title, :date, :venue
   end
 
   def search_for_events
@@ -103,7 +103,7 @@ class CLI
 
   def choose_from_event_menu
     choices = ["Toggle attendance", "Change extra guests", "Quit"]
-    @prompt.select("Choose from the menu:", choices) 
+    @prompt.select("Choose from the menu:", choices)
   end
 
   def run

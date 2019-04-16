@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190413124119) do
+ActiveRecord::Schema.define(version: 20190417121109) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name"
@@ -31,10 +31,9 @@ ActiveRecord::Schema.define(version: 20190413124119) do
     t.string   "description"
     t.datetime "date"
     t.string   "venue"
-    t.boolean  "cancelled",   default: false
     t.integer  "admin_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "guests", force: :cascade do |t|

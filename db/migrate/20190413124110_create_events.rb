@@ -5,7 +5,6 @@ class CreateEvents < ActiveRecord::Migration[5.0]
       t.string :description
       t.datetime :date
       t.string :venue
-      t.boolean :cancelled, default: false
 
       t.belongs_to :admin, index: true
 
