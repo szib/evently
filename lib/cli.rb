@@ -32,25 +32,11 @@ class CLI
   end
 
   def search_for_new_events
-    events = Event.all.reject { |event| event.guests.include?(@guest) }.map(&:title)
-    @prompt.select('Select an event:', events, filter: true)
-    @guest.events.first.display
+    events = Event.all.reject { |event| event.guests.include?(@guest) }
+    choices = Event.to_menu_items(events: events)
+    id = @prompt.select('Select an event:', choices, filter: true)
+    Event.find(id).display
   end
-
-  # def add_event
-  #   @prompt.yes?("Would you like to add another event?")
-  # end
-
-  # def add_event_name
-  #   event_name = @prompt.ask("What's event name?")
-  #   event = Event.find_or_create_by(name: event)
-  #   Event.create(admin: @admin, guest: guest)
-  #   puts "Done. You've created a new event."
-  # end
-  #
-  # def bye
-  #   puts "Okay, no worries!"
-  # end
 
   def run
     display_logo
