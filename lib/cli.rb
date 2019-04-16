@@ -28,12 +28,11 @@ class CLI
 
   def display_current_events
     puts 'You are currently attending:'
-    tp @guest.events, :title, :date, :venue, :cancelled
+    tp @guest.reload.events, :title, :date, :venue, :cancelled
   end
 
   def search_for_events
-    events = Event.all
-    #.reject { |event| event.guests.include?(@guest) }
+    events = Event.reload.all
     choices = Event.to_menu_items(events: events)
     id = @prompt.select('Select an event:', choices, filter: true)
     Event.find(id)
