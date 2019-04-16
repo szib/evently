@@ -14,3 +14,6 @@ gem 'tty-prompt'
 gem 'table_print'
 gem 'tty-font'
 gem 'dotenv'
+
+gem 'rest-client'
+gem 'json'
