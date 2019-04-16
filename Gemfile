@@ -9,7 +9,8 @@ gem 'rake'
 
 # TODO: remove not used gems
 gem "faker"
-gem 'pastel' 
-gem 'tty-prompt' 
-gem 'table_print' 
+gem 'pastel'
+gem 'tty-prompt'
+gem 'table_print'
 gem 'tty-font'
+gem 'dotenv'
