@@ -8,6 +8,10 @@ class Attendance < ActiveRecord::Base
 
   validates :guest, :event, presence: true
 
+  def number_of_guests
+    self.num_of_extra_guests + 1
+  end
+
   def guest_name_with_friends
     # returns e.g "Name + 5 friends"
     # returns e.g "Name + a friend"
