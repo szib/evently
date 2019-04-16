@@ -29,7 +29,6 @@ class API
       event_hash[:description] = event["description"]["text"]
       event_hash[:date] = event["start"]["local"]
       event_hash[:venue] = get_venue_name(event["venue_id"])
-      event_hash[:admin_id] = 1
 
       event_data << event_hash
     end
