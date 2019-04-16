@@ -37,4 +37,9 @@ class Attendance < ActiveRecord::Base
     end
   end
 
+  def change_num_of_friends(num)
+    self.num_of_extra_guests = num
+    self.save
+  end
+
 end
