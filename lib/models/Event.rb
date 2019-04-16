@@ -9,6 +9,10 @@ class Event < ActiveRecord::Base
 
   validates :admin, :title, :date, :venue, presence: true
 
+  def num_of_attendees?
+    # including extra friends
+  end
+
   def display
     pastel = Pastel.new
     puts '-' * 40
@@ -18,4 +22,9 @@ class Event < ActiveRecord::Base
     puts pastel.cyan("\tDate:\t #{date}")
     puts pastel.cyan("\tVenue:\t #{venue}")
   end
+
+  def to_menu_item
+    # returns a hash for prompt.select
+  end
+
 end
