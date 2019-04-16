@@ -5,15 +5,15 @@
 def seed_with_faker
   Faker::Config.random = Random.new(42)
   Faker::Config.locale = 'en-GB'
-  
-  num_of_admins = 10
-  num_of_guests = 100
-  num_of_events = 400
-  num_of_attendance = 1000
+
+  num_of_admins = 2
+  num_of_guests = 10
+  num_of_events = 40
+  num_of_attendance = 40
 
   num_of_admins.times { Admin.create(name: Faker::Name.unique.first_name) }
   num_of_guests.times { Guest.create(name: Faker::Name.unique.first_name) }
-  
+
   num_of_events.times do
     admin = Admin.find(rand(1..num_of_admins))
     Event.create(
@@ -24,7 +24,7 @@ def seed_with_faker
       admin: admin
     )
   end
-  
+
   num_of_attendance.times do |_idx|
     extra_guest_is_coming = rand(1..4) % 4 == 0
     Attendance.create(
