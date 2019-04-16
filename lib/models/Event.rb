@@ -28,8 +28,11 @@ class Event < ActiveRecord::Base
     puts pastel.green(attendees)
   end
 
-  def to_menu_item
+  def self.to_menu_items(events: events)
     # returns a hash for prompt.select
+    hash = {}
+    events.each { |event| hash["#{event.title} (#{event.id})"] = event.id }
+    hash
   end
 
 end
