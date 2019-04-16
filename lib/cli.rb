@@ -31,11 +31,27 @@ class CLI
     tp @guest.events, :title, :date, :venue, :cancelled
   end
 
-  def search_for_new_events
-    events = Event.all.reject { |event| event.guests.include?(@guest) }
+  def search_for_events
+    events = Event.all
+    #.reject { |event| event.guests.include?(@guest) }
     choices = Event.to_menu_items(events: events)
     id = @prompt.select('Select an event:', choices, filter: true)
-    Event.find(id).display
+    Event.find(id)
+  end
+
+  def update_attendance(event)
+    if event.guests.include?(@guest)
+      question = "You are already attending this event. Would you like to cancel your attendance?"
+    else
+      question = "Would you like to attend this event?"
+    end
+    answer = @prompt.yes?(question)
+    if answer == true
+      Attendance.toggle_attendance(event: event, guest: @guest)
+      puts "Consider it done."
+    else
+      puts "Okay, no problem!"
+    end
   end
 
   def run
@@ -50,7 +66,9 @@ class CLI
       when 'Show my events'
         display_current_events
       when 'Search for new events'
-        search_for_new_events
+        event = search_for_events
+        event.display
+        update_attendance(event)
       end
     end
   end
