@@ -38,6 +38,7 @@ class Attendance < ActiveRecord::Base
   end
 
   def change_num_of_friends(num)
+    return false if num < 0 || num > 10
     self.num_of_extra_guests = num
     self.save
   end
