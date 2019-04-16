@@ -58,7 +58,7 @@ class CLI
     return unless event.attending?(@guest)
 
     attendance = Attendance.find_by(guest: @guest, event: event)
-    
+
     question = "You are bringing #{attendance.friends_to_s}. Would you like to change it?"
     answer = @prompt.yes?(question)
 
@@ -68,7 +68,7 @@ class CLI
         q.validate /^\d$/
         q.messages[:valid?] = 'You can bring up to nine friends.'
       end
-      attendance.change_num_of_friends(answer.to_i) 
+      attendance.change_num_of_friends(answer.to_i)
       puts "Consider it done."
     else
       puts "Okay, no problem!"
@@ -78,10 +78,10 @@ class CLI
   def display_guest_list(event)
     pastel = Pastel.new
     attendees = event.attendances.first(5).map { |a| a.guest_name_with_friends }.join(", ")
-    if attendees.length > 5 
+    if event.attendances.length > 5
       attendees = [attendees, " and many more..."].join()
     end
-    
+
     puts pastel.green("-" * 60)
     puts pastel.green("Guest list:")
     puts pastel.green(attendees)
@@ -102,8 +102,8 @@ class CLI
     display_guest_list(event)
   end
 
-  def show_event_menu
-    choices = %w("Toggle attendance", "Change extra guests", "Quit")
+  def choose_from_event_menu
+    choices = ["Toggle attendance", "Change extra guests", "Quit"]
     @prompt.enum_select("Select an editor?") do |menu|
       menu.choice "Toggle attendance",  1
       menu.choice "Change extra guests", 2
@@ -125,9 +125,9 @@ class CLI
       when 'Search for events'
         event = search_for_events
         display_event(event)
-        
-        menu_item = show_event_menu
-        
+
+        menu_item = choose_from_event_menu
+
         case menu_item
         when 1
           update_attendance(event)
@@ -136,7 +136,7 @@ class CLI
         else
           puts "Okay."
         end
-          
+
       end
     end
   end
