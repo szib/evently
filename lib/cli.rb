@@ -102,6 +102,15 @@ class CLI
     display_guest_list(event)
   end
 
+  def show_event_menu
+    choices = %w("Toggle attendance", "Change extra guests", "Quit")
+    @prompt.enum_select("Select an editor?") do |menu|
+      menu.choice "Toggle attendance",  1
+      menu.choice "Change extra guests", 2
+      menu.choice "Quit", 3
+    end
+  end
+
   def run
     display_logo
     find_or_create_user
@@ -116,8 +125,18 @@ class CLI
       when 'Search for events'
         event = search_for_events
         display_event(event)
-        update_attendance(event)
-        update_friends(event)
+        
+        menu_item = show_event_menu
+        
+        case menu_item
+        when 1
+          update_attendance(event)
+        when 2
+          update_friends(event)
+        else
+          puts "Okay."
+        end
+          
       end
     end
   end
