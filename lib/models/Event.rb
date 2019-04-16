@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
     self.attendances.map { |a| a.number_of_guests }.sum
   end
 
-  def self.to_menu_items(events: events)
+  def self.to_menu_items(events)
     # returns a hash for prompt.select
     hash = {}
     events.each { |event| hash["#{event.title} (#{event.id})"] = event.id }

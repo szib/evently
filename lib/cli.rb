@@ -33,7 +33,7 @@ class CLI
 
   def search_for_events
     events = Event.all
-    choices = Event.to_menu_items(events: events)
+    choices = Event.to_menu_items(events)
     id = @prompt.select('Select an event:', choices, filter: true)
     Event.find(id)
   end
