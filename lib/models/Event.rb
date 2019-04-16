@@ -22,6 +22,10 @@ class Event < ActiveRecord::Base
     puts description
     puts pastel.cyan("\tDate:\t #{date}")
     puts pastel.cyan("\tVenue:\t #{venue}")
+    puts pastel.cyan("\tAttendees:\t #{self.num_of_attendees}")
+    puts '-' * 40
+    attendees = self.attendances.map { |a| a.guest_name_with_friends }.join(", ")
+    puts pastel.green(attendees)
   end
 
   def to_menu_item
