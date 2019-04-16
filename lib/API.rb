@@ -19,11 +19,11 @@ class API
       event_hash[:title] = event["name"]["text"]
       event_hash[:description] = event["description"]["text"]
       event_hash[:date] = event["start"]["local"]
-      event_hash[:venue_id] = event["venue_id"]
+      event_hash[:venue] = event["venue_id"]
+      event_hash[:admin_id] = 1
 
       event_data << event_hash
     end
-    binding.pry
     event_data
   end
 
