@@ -41,8 +41,8 @@ class CLI
     tp @guest.reload.events, :title, :date, :venue
   end
 
-  def select_event
-    events = Event.all
+  def select_new_event
+    events = @guest.reload.new_events
     choices = Event.to_menu_items(events)
     id = @prompt.select('Select an event to continue:', choices, filter: true)
     Event.find(id)
@@ -124,7 +124,7 @@ class CLI
   end
 
   def find_new_events
-    event = select_event
+    event = select_new_event
     display_event(event)
 
     menu_item = search_menu
