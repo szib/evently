@@ -37,5 +37,27 @@ class Event < ActiveRecord::Base
     attendance
   end
 
+  def box_content
+    lines = []
+    lines << "Title:#{self.title}"
+    lines << "Description: #{self.description}"
+    lines << "Date: #{self.date}"
+    lines << "Venue: #{self.venue}"
+    binding.pry
+    lines.join("\n")
+  end
+
+  def display
+    box = TTY::Box.frame(
+      width: 80,
+      height: 15,
+      align: :left,
+      padding: 3
+    ) do
+      self.box_content
+    end
+    puts box
+  end
+  
 
 end
