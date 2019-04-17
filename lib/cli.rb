@@ -108,19 +108,19 @@ class CLI
     puts pastel.green("-" * 60)
   end
 
-  def display_event(event)
-    pastel = Pastel.new
-    puts '-' * 60
-    puts pastel.yellow(event.title)
-    puts '-' * 60
-
-    puts pastel.cyan("Description:\t\t #{event.description}")
-    puts pastel.cyan("Date:\t\t #{event.date}")
-    puts pastel.cyan("Venue:\t\t #{event.venue}")
-    puts pastel.cyan("Attendees:\t\t #{event.num_of_attendees}")
-
-    display_guest_list(event)
-  end
+  # def display_event(event)
+  #   pastel = Pastel.new
+  #   puts '-' * 60
+  #   puts pastel.yellow(event.title)
+  #   puts '-' * 60
+  #
+  #   puts pastel.cyan("Description:\t\t #{event.description}")
+  #   puts pastel.cyan("Date:\t\t #{event.date}")
+  #   puts pastel.cyan("Venue:\t\t #{event.venue}")
+  #   puts pastel.cyan("Attendees:\t\t #{event.num_of_attendees}")
+  #
+  #   display_guest_list(event)
+  # end
 
   def search_menu
     choices = ["Sign up for this event.", "Back"]
@@ -134,7 +134,7 @@ class CLI
 
   def find_new_events
     event = select_new_event
-    display_event(event)
+    event.display
 
     menu_item = search_menu
 
@@ -153,7 +153,8 @@ class CLI
 
   def manage_my_events
     event = select_my_event
-    display_event(event)
+    event.display
+
 
     menu_item = manage_menu
 
