@@ -22,7 +22,7 @@ class CLI
   end
 
   def show_menu
-    menu_items = ['Show my events', 'Manage my events', 'Search all events', 'Quit']
+    menu_items = ['Show my events', 'Manage my events', 'Find new events', 'Quit']
     @prompt.select('What would you like to do?', menu_items)
   end
 
@@ -31,11 +31,22 @@ class CLI
     tp @guest.reload.events, :title, :date, :venue
   end
 
-  def search_all_events
+  def select_event
     events = Event.all
     choices = Event.to_menu_items(events)
     id = @prompt.select('Select an event to continue:', choices, filter: true)
     Event.find(id)
+  end
+
+  def event_signup(event)
+    question = "Would you like to attend this event?"
+    answer = @prompt.yes?(question)
+    if answer == true
+      event.toggle_attendance(@guest)
+      puts "Consider it done."
+    else
+      puts "Okay, no problem!"
+    end
   end
 
   def update_attendance(event)
@@ -111,6 +122,20 @@ class CLI
     @prompt.select("Choose from the menu:", choices)
   end
 
+  def find_new_events
+    event = select_event
+    display_event(event)
+
+    menu_item = search_menu
+
+    case menu_item
+    when "Sign up for this event."
+      event_signup(event)
+    else
+      puts "Going back!"
+    end
+  end
+
   def run
     display_logo
     find_or_create_user
@@ -124,19 +149,8 @@ class CLI
         display_current_events
       when 'Manage my events'
         puts 'Mischief managed.'
-      when 'Search all events'
-        event = search_all_events
-        display_event(event)
-
-        menu_item = search_menu
-
-        case menu_item
-        when "Sign up for this event."
-          update_attendance(event)
-        else
-          puts "Going back!"
-        end
-
+      when 'Find new events'
+        find_new_events
       end
     end
   end
