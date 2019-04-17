@@ -40,10 +40,10 @@ class Event < ActiveRecord::Base
   def box_content
     lines = []
     lines << "Title:#{self.title}"
-    lines << "Description: #{self.description}"
     lines << "Date: #{self.date}"
     lines << "Venue: #{self.venue}"
-    binding.pry
+    lines << " "
+    lines << "Description: #{self.description}"
     lines.join("\n")
   end
 
@@ -52,12 +52,20 @@ class Event < ActiveRecord::Base
       width: 80,
       height: 15,
       align: :left,
-      padding: 3
+      padding: 3,
+      style: {
+        fg: :bright_yellow,
+        bg: :blue,
+        border: {
+          fg: :bright_yellow,
+          bg: :blue
+        }
+      }
     ) do
       self.box_content
     end
     puts box
   end
-  
+
 
 end
