@@ -12,6 +12,10 @@ def show_menu
     menu.choice 'Faker gem', 2
     menu.choice 'Pulling data from Eventbrite', 3
   end
+  pastel = Pastel.new
+  message = pastel.yellow(":spinner") + pastel.cyan(" Seeding ...")
+  spinner = TTY::Spinner.new(message, format: :bouncing_ball)
+  spinner.auto_spin
 
   case choice
   when 1
@@ -21,6 +25,8 @@ def show_menu
   when 3
     seed_with_rest_client
   end
+
+  spinner.stop('Done!')
 end
 
 show_menu

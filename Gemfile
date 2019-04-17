@@ -13,6 +13,7 @@ gem 'pastel'
 gem 'tty-prompt'
 gem 'table_print'
 gem 'tty-font'
+gem 'tty-spinner'
 gem 'dotenv'
 
 gem 'rest-client'
