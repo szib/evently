@@ -3,13 +3,8 @@
 # ========================================
 
 def seed_with_rest_client
-  api = API.new
-  if api.api_key_present?
-    raw_event_data = api.get_flatiron_events
-    event_data = api.parse_event_information(raw_event_data)
-    event_data.each do |event|
-      Event.create(event)
-    end
+  if API.api_key_present?
+    API.import_events
   else
     puts "No API key detected. Quiting..."
   end
