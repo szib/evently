@@ -48,6 +48,13 @@ class CLI
     Event.find(id)
   end
 
+  def select_my_event
+    events = @guest.reload.events
+    choices = Event.to_menu_items(events)
+    id = @prompt.select('Select an event to continue:', choices, filter: true)
+    Event.find(id)
+  end
+
   def sign_up?(event)
     question = "Would you like to attend this event?"
     answer = @prompt.yes?(question)
@@ -125,7 +132,7 @@ class CLI
     case menu_item
     when "Sign up for this event."
       if sign_up?(event)
-        event.toggle_attendance(@guest) 
+        event.toggle_attendance(@guest)
         message("Consider it done.")
       else
         message("Okay, no problem.")
@@ -136,7 +143,7 @@ class CLI
   end
 
   def manage_my_events
-    event = select_event
+    event = select_my_event
     display_event(event)
 
     menu_item = manage_menu
@@ -144,7 +151,7 @@ class CLI
     case menu_item
     when "Cancel attendance."
       if cancel?(event)
-        event.toggle_attendance(@guest) 
+        event.toggle_attendance(@guest)
         message("Consider it done.")
       else
         message("Okay, no problem.")
@@ -173,7 +180,7 @@ class CLI
         find_new_events
       end
     end
-    
+
     bye
   end
 end
