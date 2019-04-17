@@ -12,6 +12,16 @@ class CLI
     puts @pastel.yellow(title)
   end
 
+  def bye
+    font = TTY::Font.new('doom')
+    title = font.write("Bye")
+    puts @pastel.yellow(title)
+  end
+
+  def message(msg)
+    puts @pastel.cyan("\n==> #{msg}\n")
+  end
+
   def find_or_create_user
     name = @prompt.ask("What's your name?: ")
     @guest = Guest.find_or_create_by(name: name)
@@ -63,9 +73,9 @@ class CLI
         q.messages[:valid?] = 'You can bring up to nine friends.'
       end
       attendance.change_num_of_friends(answer.to_i)
-      puts "Consider it done."
+      message("Consider it done.")
     else
-      puts "Okay, no problem!"
+      message("Okay, no problem!")
     end
   end
 
@@ -116,9 +126,9 @@ class CLI
     when "Sign up for this event."
       if sign_up?(event)
         event.toggle_attendance(@guest) 
-        puts "Consider it done."
+        message("Consider it done.")
       else
-        puts "Okay, no problem."
+        message("Okay, no problem.")
       end
     else
       puts "Going back!"
@@ -135,14 +145,14 @@ class CLI
     when "Cancel attendance."
       if cancel?(event)
         event.toggle_attendance(@guest) 
-        puts "Consider it done."
+        message("Consider it done.")
       else
-        puts "Okay, no problem."
+        message("Okay, no problem.")
       end
     when "Change extra guests"
       update_friends(event)
     else
-      puts "Going back!"
+      message("Going back!")
     end
   end
 
@@ -163,5 +173,7 @@ class CLI
         find_new_events
       end
     end
+    
+    bye
   end
 end
