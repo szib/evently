@@ -22,7 +22,7 @@ class CLI
   end
 
   def show_menu
-    menu_items = ['Show my events', 'Search for events', 'Quit']
+    menu_items = ['Show my events', 'Manage my events', 'Search all events', 'Quit']
     @prompt.select('What would you like to do?', menu_items)
   end
 
@@ -31,10 +31,10 @@ class CLI
     tp @guest.reload.events, :title, :date, :venue
   end
 
-  def search_for_events
+  def search_all_events
     events = Event.all
     choices = Event.to_menu_items(events)
-    id = @prompt.select('Select an event:', choices, filter: true)
+    id = @prompt.select('Select an event to continue:', choices, filter: true)
     Event.find(id)
   end
 
@@ -101,8 +101,13 @@ class CLI
     display_guest_list(event)
   end
 
-  def choose_from_event_menu
-    choices = ["Toggle attendance", "Change extra guests", "Quit"]
+  def search_menu
+    choices = ["Sign up for this event.", "Back"]
+    @prompt.select("Choose from the menu:", choices)
+  end
+
+  def manage_menu
+    choices = ["Cancel attendance.", "Change extra guests", "Back"]
     @prompt.select("Choose from the menu:", choices)
   end
 
@@ -117,19 +122,19 @@ class CLI
       case answer
       when 'Show my events'
         display_current_events
-      when 'Search for events'
-        event = search_for_events
+      when 'Manage my events'
+        puts 'Mischief managed.'
+      when 'Search all events'
+        event = search_all_events
         display_event(event)
 
-        menu_item = choose_from_event_menu
+        menu_item = search_menu
 
         case menu_item
-        when "Toggle attendance"
+        when "Sign up for this event."
           update_attendance(event)
-        when "Change extra guests"
-          update_friends(event)
         else
-          puts "Okay."
+          puts "Going back!"
         end
 
       end
