@@ -38,7 +38,12 @@ class CLI
 
   def display_current_events
     puts 'You are currently attending:'
-    tp @guest.reload.events, :title, :date, :venue
+    events = @guest.reload.events
+    if events.count == 0
+      message("You have not signed up for any events.")
+    else
+      tp @guest.reload.events, :title, :date, :venue
+    end
   end
 
   def select_new_event
@@ -50,18 +55,22 @@ class CLI
 
   def select_my_event
     events = @guest.reload.events
-    choices = Event.to_menu_items(events)
-    id = @prompt.select('Select an event to continue:', choices, filter: true)
-    Event.find(id)
+    if events.count == 0
+      message("You have not signed up for any events.")
+    else
+      choices = Event.to_menu_items(events)
+      id = @prompt.select('Select an event to continue:', choices, filter: true)
+      Event.find(id)
+    end
   end
 
   def sign_up?(event)
-    question = "Would you like to attend this event?"
+    question = "Are you sure you want to sign up for this event?"
     answer = @prompt.yes?(question)
   end
 
   def cancel?(event)
-    question = "Would you like to cancel your attendance?"
+    question = "Are you sure you want to cancel your attendance?"
     answer = @prompt.yes?(question)
   end
 
