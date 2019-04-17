@@ -132,10 +132,12 @@ class CLI
     @prompt.select("Choose from the menu:", choices)
   end
 
+  
   def find_new_events
     event = select_new_event
+    return if event.nil?
+    
     event.display
-
     menu_item = search_menu
 
     case menu_item
@@ -150,12 +152,12 @@ class CLI
       puts "Going back!"
     end
   end
-
+  
   def manage_my_events
     event = select_my_event
+    return if event.nil?
+    
     event.display
-
-
     menu_item = manage_menu
 
     case menu_item
