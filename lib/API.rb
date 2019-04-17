@@ -1,6 +1,10 @@
 class API
   URL = "https://www.eventbriteapi.com/v3/events/search/?organizer.id=17393370241"
 
+  def api_key_present?
+    ENV.key?("EVENTBRITE_API_KEY")
+  end
+
   def url_with_token
     "#{URL}&token=#{ENV["EVENTBRITE_API_KEY"]}"
   end
