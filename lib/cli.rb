@@ -125,6 +125,27 @@ class CLI
     end
   end
 
+  def manage_my_events
+    event = select_event
+    display_event(event)
+
+    menu_item = manage_menu
+
+    case menu_item
+    when "Cancel attendance."
+      if cancel?(event)
+        event.toggle_attendance(@guest) 
+        puts "Consider it done."
+      else
+        puts "Okay, no problem."
+      end
+    when "Change extra guests"
+      update_friends(event)
+    else
+      puts "Going back!"
+    end
+  end
+
   def run
     display_logo
     find_or_create_user
@@ -137,7 +158,7 @@ class CLI
       when 'Show my events'
         display_current_events
       when 'Manage my events'
-        puts 'Mischief managed.'
+        manage_my_events
       when 'Find new events'
         find_new_events
       end
