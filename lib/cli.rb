@@ -38,30 +38,14 @@ class CLI
     Event.find(id)
   end
 
-  def event_signup(event)
+  def sign_up?(event)
     question = "Would you like to attend this event?"
     answer = @prompt.yes?(question)
-    if answer == true
-      event.toggle_attendance(@guest)
-      puts "Consider it done."
-    else
-      puts "Okay, no problem!"
-    end
   end
 
-  def update_attendance(event)
-    if event.guests.include?(@guest)
-      question = "You are already attending this event. Would you like to cancel your attendance?"
-    else
-      question = "Would you like to attend this event?"
-    end
+  def cancel?(event)
+    question = "Would you like to cancel your attendance?"
     answer = @prompt.yes?(question)
-    if answer == true
-      event.toggle_attendance(@guest)
-      puts "Consider it done."
-    else
-      puts "Okay, no problem!"
-    end
   end
 
   def update_friends(event)
@@ -130,7 +114,12 @@ class CLI
 
     case menu_item
     when "Sign up for this event."
-      event_signup(event)
+      if sign_up?(event)
+        event.toggle_attendance(@guest) 
+        puts "Consider it done."
+      else
+        puts "Okay, no problem."
+      end
     else
       puts "Going back!"
     end
