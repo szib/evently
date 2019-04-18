@@ -106,19 +106,6 @@ class CLI
     end
   end
 
-  def display_guest_list(event)
-    guest_list = event.guest_list
-    if guest_list.empty?
-      message 'Noone is coming to this event. Be the first to sign up. :)'
-    else
-      pastel = Pastel.new
-      puts pastel.green("-" * 60)
-      puts pastel.green("Guest list:")
-      puts pastel.green(guest_list)
-      puts pastel.green("-" * 60)
-    end
-  end
-
   def display_box(content)
     box = TTY::Box.frame(
       width: 80,
@@ -137,6 +124,15 @@ class CLI
       content
     end
     puts box
+  end
+
+  def display_guest_list(event)
+    guest_list = event.guest_list
+    if guest_list.empty?
+      message 'Noone is coming to this event. Be the first to sign up. :)'
+    else
+      display_box(guest_list)
+    end
   end
 
   def search_menu
