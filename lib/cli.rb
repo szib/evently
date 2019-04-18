@@ -134,12 +134,12 @@ class CLI
   # end
 
   def search_menu
-    choices = ["Sign up for this event.", "Back"]
+    choices = ["Show attendees", "Sign up for this event.", "Back"]
     @prompt.select("Choose from the menu:", choices)
   end
 
   def manage_menu
-    choices = ["Cancel attendance.", "Change extra guests", "Back"]
+    choices = ["Show attendees", "Cancel attendance.", "Change extra guests", "Back"]
     @prompt.select("Choose from the menu:", choices)
   end
 
@@ -160,6 +160,8 @@ class CLI
       else
         message("Okay, no problem.")
       end
+    when "Show attendees"
+      display_guest_list(event)
     else
       message "Going back!"
     end
@@ -183,6 +185,8 @@ class CLI
       end
     when "Change extra guests"
       update_friends(event)
+    when "Show attendees"
+      display_guest_list(event)
     else
       message("Going back!")
     end
