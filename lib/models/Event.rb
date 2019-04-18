@@ -45,12 +45,19 @@ class Event < ActiveRecord::Base
 
   def box_content
     lines = []
-    lines << "Title:#{self.title}"
+
+    desc = self.description
+    if desc.length > 200
+      desc = desc.slice(0, 200) + '...'
+    end
+
+    lines << "Title: #{self.title}"
     lines << "Date: #{self.date}"
     lines << "Venue: #{self.venue}"
     lines << "Attendees: #{self.num_of_attendees}"
     lines << " "
-    lines << "Description: #{self.description}"
+    lines << "Description:"
+    lines <<  desc 
     lines.join("\n")
   end
 

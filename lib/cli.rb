@@ -111,7 +111,7 @@ class CLI
       width: 80,
       height: 15,
       align: :left,
-      padding: 3,
+      padding: [1,3,1,3],
       style: {
         fg: :bright_yellow,
         bg: :blue,
