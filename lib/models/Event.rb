@@ -38,7 +38,7 @@ class Event < ActiveRecord::Base
   end
 
   def guest_list
-    self.attendances.map do |attendance| 
+    self.attendances.map do |attendance|
       attendance.guest_name_with_friends
     end.join(", ")
   end
@@ -52,26 +52,6 @@ class Event < ActiveRecord::Base
     lines << " "
     lines << "Description: #{self.description}"
     lines.join("\n")
-  end
-
-  def display
-    box = TTY::Box.frame(
-      width: 80,
-      height: 15,
-      align: :left,
-      padding: 3,
-      style: {
-        fg: :bright_yellow,
-        bg: :blue,
-        border: {
-          fg: :bright_yellow,
-          bg: :blue
-        }
-      }
-    ) do
-      self.box_content
-    end
-    puts box
   end
 
 

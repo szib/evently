@@ -119,19 +119,25 @@ class CLI
     end
   end
 
-  # def display_event(event)
-  #   pastel = Pastel.new
-  #   puts '-' * 60
-  #   puts pastel.yellow(event.title)
-  #   puts '-' * 60
-  #
-  #   puts pastel.cyan("Description:\t\t #{event.description}")
-  #   puts pastel.cyan("Date:\t\t #{event.date}")
-  #   puts pastel.cyan("Venue:\t\t #{event.venue}")
-  #   puts pastel.cyan("Attendees:\t\t #{event.num_of_attendees}")
-  #
-  #   display_guest_list(event)
-  # end
+  def display_box(content)
+    box = TTY::Box.frame(
+      width: 80,
+      height: 15,
+      align: :left,
+      padding: 3,
+      style: {
+        fg: :bright_yellow,
+        bg: :blue,
+        border: {
+          fg: :bright_yellow,
+          bg: :blue
+        }
+      }
+    ) do
+      content
+    end
+    puts box
+  end
 
   def search_menu
     choices = ["Show attendees", "Sign up for this event.", "Back"]
@@ -143,13 +149,13 @@ class CLI
     @prompt.select("Choose from the menu:", choices)
   end
 
-  
+
   def find_new_events
     event = select_new_event
     return if event.nil?
-    
+
     clear_terminal
-    event.display
+    display_box(event.box_content)
     menu_item = search_menu
 
     case menu_item
@@ -166,13 +172,13 @@ class CLI
       message "Going back!"
     end
   end
-  
+
   def manage_my_events
     event = select_my_event
     return if event.nil?
-    
+
     clear_terminal
-    event.display
+    display_box(event.box_content)
     menu_item = manage_menu
 
     case menu_item
