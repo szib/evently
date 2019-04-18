@@ -37,24 +37,26 @@ class CLI
   end
 
   def display_current_events
+    puts ""
     puts 'You are currently attending:'
     events = @guest.reload.events
     if events.count == 0
       message("You have not signed up for any events.")
     else
-      tp @guest.reload.events, :title, :date, :venue, :num_of_attendees
+      tp @guest.reload.events.sort_by(&:date), :title, :date, :venue, :num_of_attendees
     end
+    puts ""
   end
 
   def select_new_event
-    events = @guest.reload.new_events
+    events = @guest.reload.new_events.sort_by(&:date)
     choices = Event.to_menu_items(events)
     id = @prompt.select('Select an event to continue:', choices, filter: true)
     Event.find(id)
   end
 
   def select_my_event
-    events = @guest.reload.events
+    events = @guest.reload.events.sort_by(&:date)
     if events.count == 0
       message("You have not signed up for any events.")
     else
