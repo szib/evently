@@ -6,7 +6,16 @@ class CLI
     @app_name = 'Eventy'
   end
 
+  def clear_terminal
+    if Gem.win_platform?
+      system('cls')
+    else
+      system('clear')
+    end
+  end
+
   def display_logo
+    clear_terminal
     font = TTY::Font.new('doom')
     title = font.write(@app_name)
     puts @pastel.yellow(title)
@@ -28,7 +37,7 @@ class CLI
   end
 
   def welcome
-    puts "Welcome, #{@guest.name}!"
+    message "Welcome, #{@guest.name}!"
   end
 
   def show_menu
@@ -37,7 +46,7 @@ class CLI
   end
 
   def display_current_events
-    puts ""
+    display_logo
     puts 'You are currently attending:'
     events = @guest.reload.events
     if events.count == 0
@@ -139,6 +148,7 @@ class CLI
     event = select_new_event
     return if event.nil?
     
+    clear_terminal
     event.display
     menu_item = search_menu
 
@@ -151,7 +161,7 @@ class CLI
         message("Okay, no problem.")
       end
     else
-      puts "Going back!"
+      message "Going back!"
     end
   end
   
@@ -159,6 +169,7 @@ class CLI
     event = select_my_event
     return if event.nil?
     
+    clear_terminal
     event.display
     menu_item = manage_menu
 
