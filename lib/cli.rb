@@ -107,16 +107,16 @@ class CLI
   end
 
   def display_guest_list(event)
-    pastel = Pastel.new
-    attendees = event.attendances.first(5).map { |a| a.guest_name_with_friends }.join(", ")
-    if event.attendances.length > 5
-      attendees = [attendees, " and many more..."].join()
+    guest_list = event.guest_list
+    if guest_list.empty?
+      message 'Noone is coming to this event. Be the first to sign up. :)'
+    else
+      pastel = Pastel.new
+      puts pastel.green("-" * 60)
+      puts pastel.green("Guest list:")
+      puts pastel.green(guest_list)
+      puts pastel.green("-" * 60)
     end
-
-    puts pastel.green("-" * 60)
-    puts pastel.green("Guest list:")
-    puts pastel.green(attendees)
-    puts pastel.green("-" * 60)
   end
 
   # def display_event(event)

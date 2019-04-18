@@ -37,6 +37,12 @@ class Event < ActiveRecord::Base
     attendance
   end
 
+  def guest_list
+    self.attendances.map do |attendance| 
+      attendance.guest_name_with_friends
+    end.join(", ")
+  end
+
   def box_content
     lines = []
     lines << "Title:#{self.title}"
