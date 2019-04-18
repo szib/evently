@@ -28,7 +28,7 @@ class CLI
   end
 
   def message(msg)
-    puts @pastel.cyan("\n==> #{msg}\n")
+    puts @pastel.bright_cyan("\n==> #{msg}\n")
   end
 
   def find_or_create_user
@@ -112,12 +112,13 @@ class CLI
       height: 15,
       align: :left,
       padding: [1,3,1,3],
+      border: :thick,
       style: {
-        fg: :bright_yellow,
-        bg: :blue,
+        fg: :bright_cyan,
+        bg: :black,
         border: {
-          fg: :bright_yellow,
-          bg: :blue
+          fg: :bright_cyan,
+          bg: :black
         }
       }
     ) do
@@ -131,7 +132,11 @@ class CLI
     if guest_list.empty?
       message 'Noone is coming to this event. Be the first to sign up. :)'
     else
-      display_box(guest_list)
+      pastel = Pastel.new
+      puts pastel.bright_cyan("-" * 80)
+      puts pastel.bright_cyan("Guest list:")
+      puts pastel.bright_cyan(guest_list)
+      puts pastel.bright_cyan("-" * 80)
     end
   end
 
