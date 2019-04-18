@@ -42,7 +42,7 @@ class CLI
     if events.count == 0
       message("You have not signed up for any events.")
     else
-      tp @guest.reload.events, :title, :date, :venue
+      tp @guest.reload.events, :title, :date, :venue, :num_of_attendees
     end
   end
 

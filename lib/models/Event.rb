@@ -42,6 +42,7 @@ class Event < ActiveRecord::Base
     lines << "Title:#{self.title}"
     lines << "Date: #{self.date}"
     lines << "Venue: #{self.venue}"
+    lines << "Attendees: #{self.num_of_attendees}"
     lines << " "
     lines << "Description: #{self.description}"
     lines.join("\n")
