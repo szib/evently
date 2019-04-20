@@ -13,26 +13,19 @@ class Attendance < ActiveRecord::Base
   end
 
   def friends_to_s
-    if num_of_extra_guests == 0
-      'no friends'
-    elsif num_of_extra_guests == 1
-      'a friend'
-    else
-      "#{num_of_extra_guests} friends"
-    end
+    return 'no friends' if num_of_extra_guests == 0
+    return 'a friend' if num_of_extra_guests == 1
+
+    "#{num_of_extra_guests} friends"
   end
 
   def guest_name_with_friends
     # returns e.g "Name + 5 friends"
     # returns e.g "Name + a friend"
     # returns e.g "Name" if no friends
-    if num_of_extra_guests == 0
-      guest.name.to_s
-    elsif num_of_extra_guests == 1
-      "#{guest.name} + a friend"
-    else
-      "#{guest.name} + #{num_of_extra_guests} friends"
-    end
+    return guest.name.to_s if num_of_extra_guests == 0
+
+    "#{guest.name} and #{friends_to_s}"
   end
 
   def num_of_extra_guests=(num)
