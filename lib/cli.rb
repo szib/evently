@@ -71,12 +71,12 @@ class CLI
     @prompt.keypress('Press space or enter to continue', keys: %i[space return])
   end
 
-  def search_menu
+  def select_findevent_item
     choices = ['Show attendees', 'Sign up for this event.', 'Back']
     @prompt.select('Choose from the menu:', choices)
   end
 
-  def manage_menu
+  def select_managemenu_item
     choices = ['Show attendees', 'Cancel attendance.', 'Change extra guests', 'Back']
     @prompt.select('Choose from the menu:', choices)
   end
@@ -96,13 +96,13 @@ class CLI
     puts ''
   end
 
-  def find_new_events
+  def find_event
     event = select_new_event
     return if event.nil?
 
     Terminal.clear_terminal
     Terminal.show_in_box(event.event_info)
-    menu_item = search_menu
+    menu_item = select_findevent_item
 
     case menu_item
     when 'Sign up for this event.'
@@ -123,25 +123,28 @@ class CLI
     event = select_my_event
     return if event.nil?
 
-    Terminal.clear_terminal
-    Terminal.show_in_box(event.event_info)
-    menu_item = manage_menu
+    menu_item = nil
+    until menu_item == 'Back'
+      Terminal.clear_terminal
+      Terminal.show_in_box(event.event_info)
+      menu_item = select_managemenu_item
 
-    case menu_item
-    when 'Cancel attendance.'
-      if confirmed?('Are you sure you want to cancel your attendance?')
-        event.toggle_attendance(@guest)
-        Terminal.message('Consider it done.')
-      else
-        Terminal.message('Okay, no problem.')
+      case menu_item
+      when 'Cancel attendance.'
+        if confirmed?('Are you sure you want to cancel your attendance?')
+          event.toggle_attendance(@guest)
+          Terminal.message('Consider it done.')
+        else
+          Terminal.message('Okay, no problem.')
+        end
+      when 'Change extra guests'
+        update_friends(event)
+      when 'Show attendees'
+        display_guest_list(event)
       end
-    when 'Change extra guests'
-      update_friends(event)
-    when 'Show attendees'
-      display_guest_list(event)
-    else
-      Terminal.message('Going back!')
     end
+
+    Terminal.message('Going back!')
   end
 
   def show_mainmenu
@@ -154,7 +157,7 @@ class CLI
       when 'Manage my events'
         manage_my_events
       when 'Find new events'
-        find_new_events
+        find_event
       end
     end
   end
