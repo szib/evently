@@ -99,7 +99,7 @@ class CLI
         q.validate /^\d$/
         q.messages[:valid?] = 'You can bring up to nine friends.'
       end
-      attendance.change_num_of_friends(answer.to_i)
+      attendance.num_of_extra_guests = answer.to_i
       message('Consider it done.')
     else
       message('Okay, no problem!')
