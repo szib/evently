@@ -9,6 +9,6 @@ class Guest < ActiveRecord::Base
   validates :name, presence: true
 
   def new_events
-    Event.all - self.events
+    Event.all - events
   end
 end

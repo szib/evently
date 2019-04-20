@@ -1,5 +1,5 @@
 # ========================================
-#		Seeding database with Faker
+#    Seeding database with Faker
 # ========================================
 
 def seed_with_faker
@@ -17,7 +17,7 @@ def seed_with_faker
       title: "#{Faker::Verb.ing_form} event",
       description: Faker::Lorem.sentences(3).join(' '),
       date: Faker::Date.forward(30),
-      venue: Faker::Address.full_address,
+      venue: Faker::Address.full_address
     )
   end
 

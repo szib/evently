@@ -23,7 +23,7 @@ class CLI
 
   def bye
     font = TTY::Font.new('doom')
-    title = font.write("Bye")
+    title = font.write('Bye')
     puts @pastel.yellow(title)
   end
 
@@ -50,11 +50,11 @@ class CLI
     puts 'You are currently attending:'
     events = @guest.reload.events
     if events.count == 0
-      message("You have not signed up for any events.")
+      message('You have not signed up for any events.')
     else
       tp @guest.reload.events.sort_by(&:date), :title, :date, :venue, :num_of_attendees
     end
-    puts ""
+    puts ''
   end
 
   def select_new_event
@@ -67,7 +67,7 @@ class CLI
   def select_my_event
     events = @guest.reload.events.sort_by(&:date)
     if events.count == 0
-      message("You have not signed up for any events.")
+      message('You have not signed up for any events.')
     else
       choices = Event.to_menu_items(events)
       id = @prompt.select('Select an event to continue:', choices, filter: true)
@@ -75,13 +75,13 @@ class CLI
     end
   end
 
-  def sign_up?(event)
-    question = "Are you sure you want to sign up for this event?"
+  def sign_up?(_event)
+    question = 'Are you sure you want to sign up for this event?'
     answer = @prompt.yes?(question, default: false)
   end
 
-  def cancel?(event)
-    question = "Are you sure you want to cancel your attendance?"
+  def cancel?(_event)
+    question = 'Are you sure you want to cancel your attendance?'
     answer = @prompt.yes?(question, default: false)
   end
 
@@ -94,15 +94,15 @@ class CLI
     answer = @prompt.yes?(question, default: false)
 
     if answer == true
-      question = "How many friends would you like to bring?"
+      question = 'How many friends would you like to bring?'
       answer = @prompt.ask(question, default: 0) do |q|
         q.validate /^\d$/
         q.messages[:valid?] = 'You can bring up to nine friends.'
       end
       attendance.change_num_of_friends(answer.to_i)
-      message("Consider it done.")
+      message('Consider it done.')
     else
-      message("Okay, no problem!")
+      message('Okay, no problem!')
     end
   end
 
@@ -111,7 +111,7 @@ class CLI
       width: 80,
       height: 15,
       align: :left,
-      padding: [1,3,1,3],
+      padding: [1, 3, 1, 3],
       border: :thick,
       style: {
         fg: :bright_cyan,
@@ -133,23 +133,22 @@ class CLI
       message 'Noone is coming to this event. Be the first to sign up. :)'
     else
       pastel = Pastel.new
-      puts pastel.bright_cyan("-" * 80)
-      puts pastel.bright_cyan("Guest list:")
+      puts pastel.bright_cyan('-' * 80)
+      puts pastel.bright_cyan('Guest list:')
       puts pastel.bright_cyan(guest_list)
-      puts pastel.bright_cyan("-" * 80)
+      puts pastel.bright_cyan('-' * 80)
     end
   end
 
   def search_menu
-    choices = ["Show attendees", "Sign up for this event.", "Back"]
-    @prompt.select("Choose from the menu:", choices)
+    choices = ['Show attendees', 'Sign up for this event.', 'Back']
+    @prompt.select('Choose from the menu:', choices)
   end
 
   def manage_menu
-    choices = ["Show attendees", "Cancel attendance.", "Change extra guests", "Back"]
-    @prompt.select("Choose from the menu:", choices)
+    choices = ['Show attendees', 'Cancel attendance.', 'Change extra guests', 'Back']
+    @prompt.select('Choose from the menu:', choices)
   end
-
 
   def find_new_events
     event = select_new_event
@@ -160,17 +159,17 @@ class CLI
     menu_item = search_menu
 
     case menu_item
-    when "Sign up for this event."
+    when 'Sign up for this event.'
       if sign_up?(event)
         event.toggle_attendance(@guest)
-        message("Consider it done.")
+        message('Consider it done.')
       else
-        message("Okay, no problem.")
+        message('Okay, no problem.')
       end
-    when "Show attendees"
+    when 'Show attendees'
       display_guest_list(event)
     else
-      message "Going back!"
+      message 'Going back!'
     end
   end
 
@@ -183,19 +182,19 @@ class CLI
     menu_item = manage_menu
 
     case menu_item
-    when "Cancel attendance."
+    when 'Cancel attendance.'
       if cancel?(event)
         event.toggle_attendance(@guest)
-        message("Consider it done.")
+        message('Consider it done.')
       else
-        message("Okay, no problem.")
+        message('Okay, no problem.')
       end
-    when "Change extra guests"
+    when 'Change extra guests'
       update_friends(event)
-    when "Show attendees"
+    when 'Show attendees'
       display_guest_list(event)
     else
-      message("Going back!")
+      message('Going back!')
     end
   end
 

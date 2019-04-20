@@ -1,5 +1,5 @@
 # ========================================
-#		Seeding database with minimal dataset
+#    Seeding database with minimal dataset
 # ========================================
 
 def seed_with_minimal_dataset

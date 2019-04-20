@@ -9,16 +9,16 @@ class Attendance < ActiveRecord::Base
   validates :guest, :event, presence: true
 
   def number_of_guests
-    self.num_of_extra_guests + 1
+    num_of_extra_guests + 1
   end
 
   def friends_to_s
-    if self.num_of_extra_guests == 0
-      return "no friends"
-    elsif self.num_of_extra_guests == 1
-      return "a friend"
+    if num_of_extra_guests == 0
+      'no friends'
+    elsif num_of_extra_guests == 1
+      'a friend'
     else
-      return "#{self.num_of_extra_guests} friends"
+      "#{num_of_extra_guests} friends"
     end
   end
 
@@ -26,19 +26,19 @@ class Attendance < ActiveRecord::Base
     # returns e.g "Name + 5 friends"
     # returns e.g "Name + a friend"
     # returns e.g "Name" if no friends
-    if self.num_of_extra_guests == 0
-      return "#{self.guest.name}"
-    elsif self.num_of_extra_guests == 1
-      return "#{self.guest.name} + a friend"
+    if num_of_extra_guests == 0
+      guest.name.to_s
+    elsif num_of_extra_guests == 1
+      "#{guest.name} + a friend"
     else
-      return "#{self.guest.name} + #{self.num_of_extra_guests} friends"
+      "#{guest.name} + #{num_of_extra_guests} friends"
     end
   end
 
   def change_num_of_friends(num)
     return false if num < 0 || num > 10
-    self.num_of_extra_guests = num
-    self.save
-  end
 
+    self.num_of_extra_guests = num
+    save
+  end
 end
