@@ -29,7 +29,7 @@ class Attendance < ActiveRecord::Base
   end
 
   def num_of_extra_guests=(num)
-    if num.between?(1, 10)
+    if num.between?(0, 9)
       super(num)
       save
     end

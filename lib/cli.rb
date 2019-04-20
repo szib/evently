@@ -48,7 +48,7 @@ class CLI
 
     if answer == true
       question = 'How many friends would you like to bring?'
-      answer = @prompt.ask(question, default: 0) do |q|
+      answer = @prompt.ask(question, default: '0') do |q|
         q.validate /^\d$/
         q.messages[:valid?] = 'You can bring up to nine friends.'
       end
