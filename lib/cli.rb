@@ -39,7 +39,7 @@ class CLI
   def update_friends(event)
     attendance = event.attendance_of(@guest)
     if attendance.nil?
-      Terminal.message 'You are not attending this event.'
+      Terminal.error 'You are not attending this event.'
       Terminal.wait_for_keypress
       return nil
     end
@@ -109,7 +109,7 @@ class CLI
     puts 'You are currently attending:'
     events = @guest.reload.events
     if events.count == 0
-      Terminal.message('You have not signed up for any events.')
+      Terminal.error('You have not signed up for any events.')
     else
       tp @guest.reload.events.sort_by(&:date), :title, :date, :venue, :num_of_attendees
     end

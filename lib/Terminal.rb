@@ -25,7 +25,11 @@ class Terminal
   end
 
   def self.message(msg)
-    puts Pastel.new.bright_cyan("\n==> #{msg}\n")
+    puts Pastel.new.bright_yellow("\n==> #{msg}\n")
+  end
+
+  def self.error(msg)
+    puts Pastel.new.bright_red("\n==> #{msg}\n")
   end
 
   def self.show_in_box(content)
