@@ -58,7 +58,7 @@ class CLI
   end
 
   def display_guest_list(event)
-    guest_list = event.guest_list
+    guest_list = event.reload.guest_list
     if guest_list.empty?
       Terminal.message 'Noone is coming to this event. Be the first to sign up. :)'
     else
@@ -68,6 +68,7 @@ class CLI
       puts pastel.bright_cyan(guest_list)
       puts pastel.bright_cyan('-' * 80)
     end
+    @prompt.keypress('Press space or enter to continue', keys: %i[space return])
   end
 
   def search_menu
