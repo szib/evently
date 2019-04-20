@@ -100,23 +100,26 @@ class CLI
     event = select_new_event
     return if event.nil?
 
-    Terminal.clear_terminal
-    Terminal.show_in_box(event.event_info)
-    menu_item = select_findevent_item
+    menu_item = nil
+    until menu_item == 'Back'
+      Terminal.clear_terminal
+      Terminal.show_in_box(event.event_info)
+      menu_item = select_findevent_item
 
-    case menu_item
-    when 'Sign up for this event.'
-      if confirmed?('Are you sure you want to sign up for this event?')
-        event.toggle_attendance(@guest)
-        Terminal.message('Consider it done.')
-      else
-        Terminal.message('Okay, no problem.')
+      case menu_item
+      when 'Sign up for this event.'
+        if confirmed?('Are you sure you want to sign up for this event?')
+          event.toggle_attendance(@guest)
+          Terminal.message('Consider it done.')
+        else
+          Terminal.message('Okay, no problem.')
+        end
+      when 'Show attendees'
+        display_guest_list(event)
       end
-    when 'Show attendees'
-      display_guest_list(event)
-    else
-      Terminal.message 'Going back!'
     end
+
+    Terminal.message 'Going back!'
   end
 
   def manage_my_events
