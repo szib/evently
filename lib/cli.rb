@@ -37,9 +37,8 @@ class CLI
   end
 
   def update_friends(event)
-    return unless @guest.attending?(event)
-
-    attendance = Attendance.find_by(guest: @guest, event: event)
+    attendance = event.attendance_of(@guest)
+    return if attendance.nil?
 
     Terminal.message event.attendance_info_of(@guest)
 

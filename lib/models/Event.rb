@@ -53,8 +53,12 @@ class Event < ActiveRecord::Base
     lines.join("\n")
   end
 
+  def attendance_of(guest)
+    attendances.find { |attendance| attendance.guest == guest }
+  end
+
   def attendance_info_of(guest)
-    attendance = attendances.find { |attendance| attendance.guest == guest }
+    attendance = attendance_of(guest)
     if attendance
       "You are attending this event and bringing #{attendance.friends_to_s}."
     else
