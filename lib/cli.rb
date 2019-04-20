@@ -38,7 +38,11 @@ class CLI
 
   def update_friends(event)
     attendance = event.attendance_of(@guest)
-    return if attendance.nil?
+    if attendance.nil?
+      Terminal.message 'You are not attending this event.'
+      Terminal.wait_for_keypress
+      return nil
+    end
 
     Terminal.message event.attendance_info_of(@guest)
 
@@ -69,7 +73,7 @@ class CLI
       puts pastel.bright_cyan(guest_list)
       puts pastel.bright_cyan('-' * 80)
     end
-    @prompt.keypress('Press space or enter to continue', keys: %i[space return])
+    Terminal.wait_for_keypress
   end
 
   def select_event_item

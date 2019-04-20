@@ -48,4 +48,8 @@ class Terminal
     end
     puts box
   end
+
+  def self.wait_for_keypress
+    TTY::Prompt.new.keypress('Press space or enter to continue', keys: %i[space return])
+  end
 end
