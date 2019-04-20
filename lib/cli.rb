@@ -117,7 +117,7 @@ class CLI
     menu_item = nil
     until menu_item == 'Back'
       Terminal.clear_terminal
-      Terminal.show_in_box(event.event_info)
+      Terminal.show_in_box(event.reload.event_info)
       menu_item = select_event_item
 
       case menu_item
