@@ -20,10 +20,6 @@ class Event < ActiveRecord::Base
     hash
   end
 
-  def attending?(guest)
-    guests.include?(guest)
-  end
-
   def toggle_attendance(guest)
     # add or remove attendance to the event
     # guest can signup for event or cancel attendance
@@ -55,5 +51,14 @@ class Event < ActiveRecord::Base
     lines << 'Description:'
     lines << desc
     lines.join("\n")
+  end
+
+  def attendance_info_of(guest)
+    attendance = attendances.find { |attendance| attendance.guest == guest }
+    if attendance
+      "You are attending this event and bringing #{attendance.friends_to_s}."
+    else
+      'You are not attending this event.'
+    end
   end
 end

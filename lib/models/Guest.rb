@@ -11,4 +11,8 @@ class Guest < ActiveRecord::Base
   def new_events
     Event.all - events
   end
+
+  def attending?(event)
+    event.guests.include?(self)
+  end
 end

@@ -9,7 +9,7 @@ class CLI
     @guest = Guest.find_or_create_by(name: name)
   end
 
-  def confirmed?(question, default = false)
+  def confirm(question, default = false)
     answer = @prompt.yes?(question, default: default)
   end
 
@@ -37,11 +37,13 @@ class CLI
   end
 
   def update_friends(event)
-    return unless event.attending?(@guest)
+    return unless @guest.attending?(event)
 
     attendance = Attendance.find_by(guest: @guest, event: event)
 
-    question = "You are bringing #{attendance.friends_to_s}. Would you like to change it?"
+    Terminal.message event.attendance_info_of(@guest)
+
+    question = 'Would you like to change it?'
     answer = @prompt.yes?(question, default: false)
 
     if answer == true
@@ -81,6 +83,26 @@ class CLI
     @prompt.select('Choose from the menu:', choices)
   end
 
+  def change_attendance(event)
+    event.reload
+    Terminal.message event.attendance_info_of(@guest)
+
+    question = if @guest.attending?(event)
+                 'Do you want cancel your attendance?'
+               else
+                 'Do you want to sign up for this event?'
+               end
+
+    confirmed = @prompt.yes?(question, default: false)
+
+    if confirmed
+      event.toggle_attendance(@guest)
+      Terminal.message('Consider it done.')
+    else
+      Terminal.message('Okay, no problem.')
+    end
+  end
+
   # ========================================
   #    MAIN MENU ITEMS
   # ========================================
@@ -108,12 +130,7 @@ class CLI
 
       case menu_item
       when 'Sign up for this event.'
-        if confirmed?('Are you sure you want to sign up for this event?')
-          event.toggle_attendance(@guest)
-          Terminal.message('Consider it done.')
-        else
-          Terminal.message('Okay, no problem.')
-        end
+        change_attendance(event)
       when 'Show attendees'
         display_guest_list(event)
       end
@@ -134,12 +151,7 @@ class CLI
 
       case menu_item
       when 'Cancel attendance.'
-        if confirmed?('Are you sure you want to cancel your attendance?')
-          event.toggle_attendance(@guest)
-          Terminal.message('Consider it done.')
-        else
-          Terminal.message('Okay, no problem.')
-        end
+        change_attendance(event)
       when 'Change extra guests'
         update_friends(event)
       when 'Show attendees'
