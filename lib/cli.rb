@@ -155,7 +155,7 @@ class CLI
     return if event.nil?
 
     clear_terminal
-    display_box(event.box_content)
+    display_box(event.event_info)
     menu_item = search_menu
 
     case menu_item
@@ -178,7 +178,7 @@ class CLI
     return if event.nil?
 
     clear_terminal
-    display_box(event.box_content)
+    display_box(event.event_info)
     menu_item = manage_menu
 
     case menu_item

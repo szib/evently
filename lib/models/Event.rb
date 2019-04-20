@@ -41,7 +41,7 @@ class Event < ActiveRecord::Base
     attendances.map(&:guest_name_with_friends).join(', ')
   end
 
-  def box_content
+  def event_info
     lines = []
 
     desc = description
