@@ -4,12 +4,12 @@ class CLI
     @app_name = 'Eventy'
   end
 
-  def find_or_create_user
+  def login
     name = @prompt.ask("What's your name?: ", default: 'Ivan')
     @guest = Guest.find_or_create_by(name: name)
   end
 
-  def show_menu
+  def select_mainmenu_item
     menu_items = ['Show my events', 'Manage my events', 'Find new events', 'Quit']
     @prompt.select('What would you like to do?', menu_items)
   end
@@ -146,14 +146,10 @@ class CLI
     end
   end
 
-  def run
-    Terminal.display_logo(@app_name)
-    find_or_create_user
-    Terminal.welcome(@guest.name)
-
+  def show_mainmenu
     answer = nil
     until answer == 'Quit'
-      answer = show_menu
+      answer = select_mainmenu_item
       case answer
       when 'Show my events'
         display_current_events
@@ -163,6 +159,14 @@ class CLI
         find_new_events
       end
     end
+  end
+
+  def run
+    Terminal.display_logo(@app_name)
+    login
+    Terminal.welcome(@guest.name)
+
+    show_mainmenu
 
     Terminal.bye
   end
