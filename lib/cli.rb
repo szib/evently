@@ -73,13 +73,8 @@ class CLI
     @prompt.keypress('Press space or enter to continue', keys: %i[space return])
   end
 
-  def select_findevent_item
-    choices = ['Show attendees', 'Sign up for this event.', 'Back']
-    @prompt.select('Choose from the menu:', choices)
-  end
-
-  def select_managemenu_item
-    choices = ['Show attendees', 'Cancel attendance.', 'Change extra guests', 'Back']
+  def select_event_item
+    choices = ['Show attendees', 'Manage attendance', 'Change extra guests', 'Back']
     @prompt.select('Choose from the menu:', choices)
   end
 
@@ -118,44 +113,20 @@ class CLI
     puts ''
   end
 
-  def find_event
-    event = select_new_event
-    return if event.nil?
-
+  def manage_event(event)
     menu_item = nil
     until menu_item == 'Back'
       Terminal.clear_terminal
       Terminal.show_in_box(event.event_info)
-      menu_item = select_findevent_item
+      menu_item = select_event_item
 
       case menu_item
-      when 'Sign up for this event.'
-        change_attendance(event)
       when 'Show attendees'
         display_guest_list(event)
-      end
-    end
-
-    Terminal.message 'Going back!'
-  end
-
-  def manage_my_events
-    event = select_my_event
-    return if event.nil?
-
-    menu_item = nil
-    until menu_item == 'Back'
-      Terminal.clear_terminal
-      Terminal.show_in_box(event.event_info)
-      menu_item = select_managemenu_item
-
-      case menu_item
-      when 'Cancel attendance.'
+      when 'Manage attendance'
         change_attendance(event)
       when 'Change extra guests'
         update_friends(event)
-      when 'Show attendees'
-        display_guest_list(event)
       end
     end
 
@@ -170,9 +141,11 @@ class CLI
       when 'Show my events'
         display_current_events
       when 'Manage my events'
-        manage_my_events
+        event = select_my_event
+        manage_event(event)
       when 'Find new events'
-        find_event
+        event = select_new_event
+        manage_event(event)
       end
     end
   end
