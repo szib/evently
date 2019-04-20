@@ -1,43 +1,12 @@
 class CLI
   def initialize
-    @pastel = Pastel.new
     @prompt = TTY::Prompt.new
-
     @app_name = 'Eventy'
-  end
-
-  def clear_terminal
-    if Gem.win_platform?
-      system('cls')
-    else
-      system('clear')
-    end
-  end
-
-  def display_logo
-    clear_terminal
-    font = TTY::Font.new('doom')
-    title = font.write(@app_name)
-    puts @pastel.yellow(title)
-  end
-
-  def bye
-    font = TTY::Font.new('doom')
-    title = font.write('Bye')
-    puts @pastel.yellow(title)
-  end
-
-  def message(msg)
-    puts @pastel.bright_cyan("\n==> #{msg}\n")
   end
 
   def find_or_create_user
     name = @prompt.ask("What's your name?: ", default: 'Ivan')
     @guest = Guest.find_or_create_by(name: name)
-  end
-
-  def welcome
-    message "Welcome, #{@guest.name}!"
   end
 
   def show_menu
@@ -46,11 +15,11 @@ class CLI
   end
 
   def display_current_events
-    display_logo
+    Terminal.display_logo(@app_name)
     puts 'You are currently attending:'
     events = @guest.reload.events
     if events.count == 0
-      message('You have not signed up for any events.')
+      Terminal.message('You have not signed up for any events.')
     else
       tp @guest.reload.events.sort_by(&:date), :title, :date, :venue, :num_of_attendees
     end
@@ -67,7 +36,7 @@ class CLI
   def select_my_event
     events = @guest.reload.events.sort_by(&:date)
     if events.count == 0
-      message('You have not signed up for any events.')
+      Terminal.message('You have not signed up for any events.')
     else
       choices = Event.to_menu_items(events)
       id = @prompt.select('Select an event to continue:', choices, filter: true)
@@ -100,37 +69,16 @@ class CLI
         q.messages[:valid?] = 'You can bring up to nine friends.'
       end
       attendance.num_of_extra_guests = answer.to_i
-      message('Consider it done.')
+      Terminal.message('Consider it done.')
     else
-      message('Okay, no problem!')
+      Terminal.message('Okay, no problem!')
     end
-  end
-
-  def display_box(content)
-    box = TTY::Box.frame(
-      width: 80,
-      height: 15,
-      align: :left,
-      padding: [1, 3, 1, 3],
-      border: :thick,
-      style: {
-        fg: :bright_cyan,
-        bg: :black,
-        border: {
-          fg: :bright_cyan,
-          bg: :black
-        }
-      }
-    ) do
-      content
-    end
-    puts box
   end
 
   def display_guest_list(event)
     guest_list = event.guest_list
     if guest_list.empty?
-      message 'Noone is coming to this event. Be the first to sign up. :)'
+      Terminal.message 'Noone is coming to this event. Be the first to sign up. :)'
     else
       pastel = Pastel.new
       puts pastel.bright_cyan('-' * 80)
@@ -154,22 +102,22 @@ class CLI
     event = select_new_event
     return if event.nil?
 
-    clear_terminal
-    display_box(event.event_info)
+    Terminal.clear_terminal
+    Terminal.show_in_box(event.event_info)
     menu_item = search_menu
 
     case menu_item
     when 'Sign up for this event.'
       if sign_up?(event)
         event.toggle_attendance(@guest)
-        message('Consider it done.')
+        Terminal.message('Consider it done.')
       else
-        message('Okay, no problem.')
+        Terminal.message('Okay, no problem.')
       end
     when 'Show attendees'
       display_guest_list(event)
     else
-      message 'Going back!'
+      Terminal.message 'Going back!'
     end
   end
 
@@ -177,31 +125,31 @@ class CLI
     event = select_my_event
     return if event.nil?
 
-    clear_terminal
-    display_box(event.event_info)
+    Terminal.clear_terminal
+    Terminal.show_in_box(event.event_info)
     menu_item = manage_menu
 
     case menu_item
     when 'Cancel attendance.'
       if cancel?(event)
         event.toggle_attendance(@guest)
-        message('Consider it done.')
+        Terminal.message('Consider it done.')
       else
-        message('Okay, no problem.')
+        Terminal.message('Okay, no problem.')
       end
     when 'Change extra guests'
       update_friends(event)
     when 'Show attendees'
       display_guest_list(event)
     else
-      message('Going back!')
+      Terminal.message('Going back!')
     end
   end
 
   def run
-    display_logo
+    Terminal.display_logo(@app_name)
     find_or_create_user
-    welcome
+    Terminal.welcome(@guest.name)
 
     answer = nil
     until answer == 'Quit'
@@ -216,6 +164,6 @@ class CLI
       end
     end
 
-    bye
+    Terminal.bye
   end
 end
