@@ -9,21 +9,13 @@ class CLI
     @guest = Guest.find_or_create_by(name: name)
   end
 
+  def confirmed?(question, default = false)
+    answer = @prompt.yes?(question, default: default)
+  end
+
   def select_mainmenu_item
     menu_items = ['Show my events', 'Manage my events', 'Find new events', 'Quit']
     @prompt.select('What would you like to do?', menu_items)
-  end
-
-  def display_current_events
-    Terminal.display_logo(@app_name)
-    puts 'You are currently attending:'
-    events = @guest.reload.events
-    if events.count == 0
-      Terminal.message('You have not signed up for any events.')
-    else
-      tp @guest.reload.events.sort_by(&:date), :title, :date, :venue, :num_of_attendees
-    end
-    puts ''
   end
 
   def select_new_event
@@ -42,16 +34,6 @@ class CLI
       id = @prompt.select('Select an event to continue:', choices, filter: true)
       Event.find(id)
     end
-  end
-
-  def sign_up?(_event)
-    question = 'Are you sure you want to sign up for this event?'
-    answer = @prompt.yes?(question, default: false)
-  end
-
-  def cancel?(_event)
-    question = 'Are you sure you want to cancel your attendance?'
-    answer = @prompt.yes?(question, default: false)
   end
 
   def update_friends(event)
@@ -98,6 +80,21 @@ class CLI
     @prompt.select('Choose from the menu:', choices)
   end
 
+  # ========================================
+  #    MAIN MENU ITEMS
+  # ========================================
+  def display_current_events
+    Terminal.display_logo(@app_name)
+    puts 'You are currently attending:'
+    events = @guest.reload.events
+    if events.count == 0
+      Terminal.message('You have not signed up for any events.')
+    else
+      tp @guest.reload.events.sort_by(&:date), :title, :date, :venue, :num_of_attendees
+    end
+    puts ''
+  end
+
   def find_new_events
     event = select_new_event
     return if event.nil?
@@ -108,7 +105,7 @@ class CLI
 
     case menu_item
     when 'Sign up for this event.'
-      if sign_up?(event)
+      if confirmed?('Are you sure you want to sign up for this event?')
         event.toggle_attendance(@guest)
         Terminal.message('Consider it done.')
       else
@@ -131,7 +128,7 @@ class CLI
 
     case menu_item
     when 'Cancel attendance.'
-      if cancel?(event)
+      if confirmed?('Are you sure you want to cancel your attendance?')
         event.toggle_attendance(@guest)
         Terminal.message('Consider it done.')
       else
